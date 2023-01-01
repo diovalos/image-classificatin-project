@@ -89,6 +89,7 @@ def main():
     model.class_to_idx = class_index
     save_checkpoint(path, model, optimizer, args, classifier)
     
+    
     #training
 def train(model,criterion, optimizer,trainloader,valloader,testloader,epochs, gpu):
     steps = 0
@@ -103,6 +104,7 @@ def train(model,criterion, optimizer,trainloader,valloader,testloader,epochs, gp
                     inputs, labels = inputs.to('cuda'), labels.to('cuda') 
                 else:
                     model.cpu() 
+                            
                 optimizer.zero_grad()
                 
                 outputs = model.forward(inputs)
@@ -135,7 +137,23 @@ def train(model,criterion, optimizer,trainloader,valloader,testloader,epochs, gp
                         "Accuracy: {:.4f}".format(accuracy),
                         )
                     running_loss = 0
+                    
+#-----------------------------------------------------------------                    
+def save_checkpoint(path, model, optimizer, args, classifier):
+    
+    checkpoint = {'arch': args.arch, 
+                  'model': model,
+                  'learning_rate': args.learning_rate,
+                  'hidden_units': args.hidden_units,
+                  'classifier' : classifier,
+                  'epochs': args.epochs,
+                  'optimizer': optimizer.state_dict(),
+                  'state_dict': model.state_dict(),
+                  'class_to_idx': model.class_to_idx}
 
-                                 
+    torch.save(checkpoint, path)
+
+
+#-------------------------------------------------------------                                 
 if __name__ == "__main__":
     main()
