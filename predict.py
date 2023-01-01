@@ -31,7 +31,6 @@ args = parser.parse_args()
 top_k= args.top_k
 checkpoint = args.checkpoint
 filepath = args.filepath
-category_names = args.category_names
 gpu = args.gpu
 
 #---------------------------------------------------------
